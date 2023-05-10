@@ -70,7 +70,7 @@ services:
       timeout: 10s
       retries: 10
   mapper-service:
-    build: services/donor-service
+    build: services/mapper-service
     environment:
       - REGISTRY_URL=http://registry:8081/
       - CALLBACK_SERVICE_URL=http://callback-service:8765/v0.1.0/mapper/
