@@ -15,8 +15,17 @@
 			<li aria-current={$page.url.pathname === '/link' ? 'page' : undefined}>
 				<a href="/link">Link</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
+			<li aria-current={$page.url.pathname === '/search' ? 'page' : undefined}>
+				<a href="/search">Search</a>
+			</li>
+			<li aria-current={$page.url.pathname === '/resolve' ? 'page' : undefined}>
+				<a href="/resolve">Resolve</a>
+			</li>
+			<li aria-current={$page.url.pathname === '/update' ? 'page' : undefined}>
+				<a href="/update">Update</a>
+			</li>
+			<li aria-current={$page.url.pathname === '/unlink' ? 'page' : undefined}>
+				<a href="/unlink">Unlink</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">

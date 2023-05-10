@@ -68,7 +68,7 @@
 		<span>Mobile Number:</span>
 		<input bind:value={mobile_number}/>
 	</div>
-	<button on:click={onLink}>LINK</button>
+	<button on:click={onLink}>Link</button>
 </div>
 <style>
 	div {

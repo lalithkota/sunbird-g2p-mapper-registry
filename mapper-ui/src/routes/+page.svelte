@@ -17,7 +17,7 @@
 			</picture>
 		</span>
 
-		to your new<br />SvelteKit app
+		G2P Financial Mapper Registry
 	</h1>
 
 </section>
