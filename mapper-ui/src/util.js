@@ -18,7 +18,7 @@ export function createMapperHeader(mode) {
 const TRANSACTION_ID = "transaction_id";
 
 export function createTransactionObject() {
-    let existingTransactionID = localStorage.getItem(TRANSACTION_ID)
+    let existingTransactionID = localStorage.getItem(TRANSACTION_ID);
     if (!existingTransactionID) {
         existingTransactionID = uuidv4();
         localStorage.setItem(TRANSACTION_ID, existingTransactionID)
@@ -27,4 +27,8 @@ export function createTransactionObject() {
         transaction_id: existingTransactionID,
         reference_id: uuidv4()
     }
+}
+
+export function getTransactionId() {
+    return localStorage.getItem(TRANSACTION_ID);
 }

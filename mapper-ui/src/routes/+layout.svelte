@@ -1,5 +1,6 @@
 <script>
 	import Header from './Header.svelte';
+	import Callback from './Callback.svelte';
 	import './styles.css';
 </script>
 
@@ -9,14 +10,18 @@
 	<main>
 		<slot />
 	</main>
-	<footer>
-		<div>
-			callback
-		</div>
-	</footer>
+	<div class="callback">
+		<h1>Callbacks</h1>
+		<Callback/>
+	</div>
 </div>
 
 <style>
+	.callback {
+		height: 50vh;
+		background: gray;
+		overflow-y: scroll;
+	}
 	.app {
 		display: flex;
 		flex-direction: column;
