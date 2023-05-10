@@ -1,4 +1,4 @@
-FROM node:20 AS build
+FROM node:20 AS mapper-build
 
 WORKDIR /app
 
@@ -8,5 +8,5 @@ RUN npm install
 COPY . ./
 RUN npm run build
 
-FROM nginx:1.19-alpine
-COPY --from=build /app/public /usr/share/nginx/html
+FROM nginx:1.20-alpine
+COPY --from=mapper-build /app/build /usr/share/nginx/html
