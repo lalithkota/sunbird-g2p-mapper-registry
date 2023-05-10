@@ -8,9 +8,6 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - ELASTIC_PASSWORD=${ELASTIC_SEARCH_PASSWORD}
       - xpack.security.enabled=${ELASTIC_SECURITY_ENABLED-false}
-    ports:
-      - "9200:9200"
-      - "9300:9300"
     healthcheck:
       test: [ "CMD", "curl", "-f", "localhost:9200/_cluster/health", "--header",  "Authorization: Basic ZWxhc3RpYzpEa0llZFBQU0Ni" ]
       interval: 30s
@@ -20,8 +17,6 @@ services:
     image: postgres
     volumes:
       - ./${DB_DIR-db-data}:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_DB=registry
       - POSTGRES_USER=postgres
@@ -50,8 +45,6 @@ services:
       - webhook_enabled=false
       - webhook_url=http://localhost:5001/api/v1/callback
       - manager_type=${MANAGER_TYPE-DefinitionsManager}
-    ports:
-      - "8081:8081"
     depends_on:
       es:
         condition: service_healthy
