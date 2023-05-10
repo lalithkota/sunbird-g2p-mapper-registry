@@ -807,6 +807,24 @@ paths:
             properties:
               status:
                 type: string
+  /logs:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: transaction_id
+          type: string
+          required: true
+      responses:
+        200:
+          description: Health response
+          schema:
+            properties:
+              logs:
+                type: array
+                items:
+                  type: string
   /mapper/on-link:
     post:
       consumes:

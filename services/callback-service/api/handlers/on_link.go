@@ -20,6 +20,7 @@ type onLink struct {
 func (l onLink) Handle(params operations.PostG2pMapperOnLinkParams) middleware.Responder {
 	bytes, _ := json.Marshal(params.Body)
 	log.Infof("On link response: %v", string(bytes))
+	appendLog(string(*params.Body.Message.TransactionID), string(bytes))
 	response := operations.NewPostG2pMapperOnLinkDefault(200)
 	response.Payload = &operations.PostG2pMapperOnLinkDefaultBody{
 		Message: &operations.PostG2pMapperOnLinkDefaultBodyMessage{

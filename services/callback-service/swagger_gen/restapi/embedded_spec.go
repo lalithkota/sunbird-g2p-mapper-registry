@@ -47,6 +47,36 @@ func init() {
         }
       }
     },
+    "/logs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "transaction_id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Health response",
+            "schema": {
+              "properties": {
+                "logs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/mapper/on-link": {
       "post": {
         "description": "Linking id to fa response through callback end point",
@@ -1844,6 +1874,36 @@ func init() {
               "properties": {
                 "status": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "transaction_id",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Health response",
+            "schema": {
+              "properties": {
+                "logs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }

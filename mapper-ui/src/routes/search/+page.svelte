@@ -1,7 +1,10 @@
 <script>
+	import {createMapperHeader, createTransactionObject} from "../../util.js";
+
 	let value = "";
 	let type = "id";
 	function onSearch() {
+		const {transaction_id, reference_id} = createTransactionObject();
 		fetch("https://g2p-financial-wrapper.xiv.in/mapper-service/v0.1.0/mapper/search", {
 			method: 'post',
 			headers: {
@@ -9,21 +12,11 @@
 			},
 			body: JSON.stringify({
 				"signature": "Signature:  namespace=\"g2p\", kidId=\"{sender_id}|{unique_key_id}|{algorithm}\", algorithm=\"ed25519\", created=\"1606970629\", expires=\"1607030629\", headers=\"(created) (expires) digest\", signature=\"Base64(signing content)",
-				"header": {
-					"version": "0.1.0",
-					"message_id": "123456789020211216223812",
-					"message_ts": "2022-12-04T18:01:07+00:00",
-					"action": "search",
-					"sender_id": "registry.example.org",
-					"sender_uri": "https://registry.sender.org/g2p/callback/on-disburse",
-					"receiver_id": "pymts.example.org",
-					"total_count": 21800,
-					"is_encrypted": true
-				},
+				"header": createMapperHeader("search"),
 				"message": {
-					"transaction_id": "12345678901234567000",
+					"transaction_id": transaction_id,
 					"search_request": {
-						"reference_id": "12345678901234567890",
+						"reference_id": reference_id,
 						"request_type": "link",
 						"attribute_type": type,
 						"attribute_value": value,

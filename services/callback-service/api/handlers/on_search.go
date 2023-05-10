@@ -20,6 +20,7 @@ type onSearch struct {
 func (l onSearch) Handle(params operations.PostG2pFamapOnSearchParams) middleware.Responder {
 	bytes, _ := json.Marshal(params.Body)
 	log.Infof("On link response: %v", string(bytes))
+	appendLog(string(*params.Body.Message.TransactionID), string(bytes))
 	response := operations.NewPostG2pMapperOnLinkDefault(200)
 	response.Payload = &operations.PostG2pMapperOnLinkDefaultBody{
 		Message: &operations.PostG2pMapperOnLinkDefaultBodyMessage{

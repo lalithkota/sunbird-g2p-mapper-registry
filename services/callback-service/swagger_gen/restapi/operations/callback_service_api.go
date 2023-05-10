@@ -46,6 +46,9 @@ func NewCallbackServiceAPI(spec *loads.Document) *CallbackServiceAPI {
 		GetHealthHandler: GetHealthHandlerFunc(func(params GetHealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetHealth has not yet been implemented")
 		}),
+		GetLogsHandler: GetLogsHandlerFunc(func(params GetLogsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetLogs has not yet been implemented")
+		}),
 		PostG2pFamapOnSearchHandler: PostG2pFamapOnSearchHandlerFunc(func(params PostG2pFamapOnSearchParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostG2pFamapOnSearch has not yet been implemented")
 		}),
@@ -105,6 +108,8 @@ type CallbackServiceAPI struct {
 
 	// GetHealthHandler sets the operation handler for the get health operation
 	GetHealthHandler GetHealthHandler
+	// GetLogsHandler sets the operation handler for the get logs operation
+	GetLogsHandler GetLogsHandler
 	// PostG2pFamapOnSearchHandler sets the operation handler for the post g2p famap on search operation
 	PostG2pFamapOnSearchHandler PostG2pFamapOnSearchHandler
 	// PostG2pMapperOnLinkHandler sets the operation handler for the post g2p mapper on link operation
@@ -199,6 +204,9 @@ func (o *CallbackServiceAPI) Validate() error {
 
 	if o.GetHealthHandler == nil {
 		unregistered = append(unregistered, "GetHealthHandler")
+	}
+	if o.GetLogsHandler == nil {
+		unregistered = append(unregistered, "GetLogsHandler")
 	}
 	if o.PostG2pFamapOnSearchHandler == nil {
 		unregistered = append(unregistered, "PostG2pFamapOnSearchHandler")
@@ -312,6 +320,10 @@ func (o *CallbackServiceAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/health"] = NewGetHealth(o.context, o.GetHealthHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/logs"] = NewGetLogs(o.context, o.GetLogsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
