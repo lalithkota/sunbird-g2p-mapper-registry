@@ -9,5 +9,5 @@ COPY . .
 RUN go mod download
 RUN make deps
 RUN GOFLAGS=" -tags=musl" make all
-EXPOSE 8765
+EXPOSE 8766
 CMD ["/app/mapper-service/mapper-service", "--port", "8766", "--host", "0.0.0.0"]

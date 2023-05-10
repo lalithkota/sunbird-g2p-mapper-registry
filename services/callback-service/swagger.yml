@@ -796,6 +796,17 @@ info:
   title: ID Mapper Callback
   version: 0.1.0
 paths:
+  /health:
+    get:
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Health response
+          schema:
+            properties:
+              status:
+                type: string
   /mapper/on-link:
     post:
       consumes:

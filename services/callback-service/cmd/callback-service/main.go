@@ -34,7 +34,7 @@ func main() {
 	api.PostG2pMapperOnUnlinkHandler = handlers.OnUnlinkHandler()
 	api.PostG2pMapperOnResolveHandler = handlers.OnResolveHandler()
 	api.PostG2pFamapOnSearchHandler = handlers.OnSearchHandler()
-
+	api.GetHealthHandler = handlers.HealthHandler()
 	// serve API
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)

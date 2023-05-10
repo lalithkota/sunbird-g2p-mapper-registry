@@ -28,6 +28,25 @@ func init() {
   },
   "basePath": "/v0.1.0",
   "paths": {
+    "/health": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health response",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/mapper/on-link": {
       "post": {
         "description": "Linking id to fa response through callback end point",
@@ -1813,6 +1832,25 @@ func init() {
   },
   "basePath": "/v0.1.0",
   "paths": {
+    "/health": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health response",
+            "schema": {
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/mapper/on-link": {
       "post": {
         "description": "Linking id to fa response through callback end point",

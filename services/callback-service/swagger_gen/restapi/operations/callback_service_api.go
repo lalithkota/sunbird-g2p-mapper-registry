@@ -43,6 +43,9 @@ func NewCallbackServiceAPI(spec *loads.Document) *CallbackServiceAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		GetHealthHandler: GetHealthHandlerFunc(func(params GetHealthParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetHealth has not yet been implemented")
+		}),
 		PostG2pFamapOnSearchHandler: PostG2pFamapOnSearchHandlerFunc(func(params PostG2pFamapOnSearchParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostG2pFamapOnSearch has not yet been implemented")
 		}),
@@ -100,6 +103,8 @@ type CallbackServiceAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// GetHealthHandler sets the operation handler for the get health operation
+	GetHealthHandler GetHealthHandler
 	// PostG2pFamapOnSearchHandler sets the operation handler for the post g2p famap on search operation
 	PostG2pFamapOnSearchHandler PostG2pFamapOnSearchHandler
 	// PostG2pMapperOnLinkHandler sets the operation handler for the post g2p mapper on link operation
@@ -192,6 +197,9 @@ func (o *CallbackServiceAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.GetHealthHandler == nil {
+		unregistered = append(unregistered, "GetHealthHandler")
+	}
 	if o.PostG2pFamapOnSearchHandler == nil {
 		unregistered = append(unregistered, "PostG2pFamapOnSearchHandler")
 	}
@@ -300,6 +308,10 @@ func (o *CallbackServiceAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/health"] = NewGetHealth(o.context, o.GetHealthHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
