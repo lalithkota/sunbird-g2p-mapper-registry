@@ -15,6 +15,8 @@ type health struct {
 
 func (h health) Handle(params operations.GetHealthParams) middleware.Responder {
 	ok := operations.NewGetHealthOK()
-	ok.Payload.Status = "UP"
+	ok.SetPayload(&operations.GetHealthOKBody{
+		Status: "UP",
+	})
 	return ok
 }
