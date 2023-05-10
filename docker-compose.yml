@@ -71,5 +71,10 @@ services:
       retries: 10
   mapper-service:
     build: services/donor-service
+    environment:
+      - REGISTRY_URL=http://registry:8081/
+      - CALLBACK_SERVICE_URL=http://callback-service:8765/v0.1.0/mapper/
   callback-service:
     build: services/callback-service
+    environment:
+      - REGISTRY_URL=http://registry:8081/
