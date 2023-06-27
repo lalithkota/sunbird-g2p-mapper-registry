@@ -1,4 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
+import {config} from "./config.js";
 
 
 export function createMapperHeader(mode) {
@@ -8,7 +9,7 @@ export function createMapperHeader(mode) {
         "message_ts": new Date().toISOString(),
         "action": mode,
         "sender_id": "mapper.sunbirdrc.dev",
-        "sender_uri": "http://g2p-financial-wrapper.xiv.in/",
+        "sender_uri": config.BASE_URL,
         "receiver_id": "callback.sunbirdrc.dev",
         "total_count": 0,
         "is_encrypted": false

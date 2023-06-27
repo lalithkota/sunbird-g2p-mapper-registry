@@ -1,5 +1,6 @@
 <script>
 	import {createMapperHeader, createTransactionObject} from "../../util.js";
+	import {config} from "../../config.js";
 
 	let id = "";
 	let fa = "";
@@ -7,7 +8,7 @@
 	let mobile_number = "";
 	function onLink() {
 		const {transaction_id, reference_id} = createTransactionObject();
-		fetch("https://g2p-financial-wrapper.xiv.in/mapper-service/v0.1.0/mapper/link", {
+		fetch(config.BASE_URL + "/mapper-service/v0.1.0/mapper/link", {
 			method: 'post',
 			headers: {
 				'content-type': 'application/json'
