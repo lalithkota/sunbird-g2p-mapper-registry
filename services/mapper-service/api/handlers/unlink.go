@@ -45,7 +45,7 @@ func (u unlink) Handle(params operations.PostG2pMapperUnlinkParams) middleware.R
 	}
 
 	onUpdateRequest := u.createOnUnlinkRequestPayload(params, unlinkResponses)
-	services.NewCallbackService().Callback(onUpdateRequest, "on-unlink")
+	services.NewCallbackService(string(params.Body.Header.SenderURI)).Callback(onUpdateRequest, "on-unlink")
 
 	response := operations.NewPostG2pMapperUnlinkDefault(200)
 	response.Payload = &operations.PostG2pMapperUnlinkDefaultBody{

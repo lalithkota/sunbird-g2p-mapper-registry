@@ -42,7 +42,7 @@ func (l link) Handle(params operations.PostG2pMapperLinkParams) middleware.Respo
 	}
 
 	onLinkRequest := l.createOnLinkRequestPayload(params, linkResponses)
-	services.NewCallbackService().Callback(onLinkRequest, "on-link")
+	services.NewCallbackService(string(params.Body.Header.SenderURI)).Callback(onLinkRequest, "on-link")
 
 	response := operations.NewPostG2pMapperLinkDefault(200)
 	response.Payload = &operations.PostG2pMapperLinkDefaultBody{

@@ -38,7 +38,7 @@ func (u resolve) Handle(params operations.PostG2pMapperResolveParams) middleware
 	}
 
 	onUpdateRequest := u.createOnResolveRequestPayload(params, resolveResponses)
-	services.NewCallbackService().Callback(onUpdateRequest, "on-resolve")
+	services.NewCallbackService(string(params.Body.Header.SenderURI)).Callback(onUpdateRequest, "on-resolve")
 
 	response := operations.NewPostG2pMapperResolveDefault(200)
 	response.Payload = &operations.PostG2pMapperResolveDefaultBody{

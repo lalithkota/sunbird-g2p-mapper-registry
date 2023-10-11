@@ -9,7 +9,7 @@ export function createMapperHeader(mode) {
         "message_ts": new Date().toISOString(),
         "action": mode,
         "sender_id": "mapper.sunbirdrc.dev",
-        "sender_uri": config.BASE_URL,
+        "sender_uri": "",
         "receiver_id": "callback.sunbirdrc.dev",
         "total_count": 0,
         "is_encrypted": false

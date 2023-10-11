@@ -10,14 +10,20 @@ import (
 
 var service = CallbackService{}
 
-func NewCallbackService() CallbackService {
+func NewCallbackService(callbackUrl string) CallbackService {
+	var url string
+	if callbackUrl != "" {
+		url = callbackUrl
+	} else {
+		url = config.Config.CallbackService.Url
+	}
 	if service.Client == nil {
 		c := req.C().
 			// All GitHub API requests need this header.
 			DevMode().
 			SetCommonHeader("Accept", "application/json").
 			// All GitHub API requests use the same base URL.
-			SetBaseURL(config.Config.CallbackService.Url).
+			SetBaseURL(url).
 			// Enable dump at the request-level for each request, and only
 			// temporarily stores the dump content in memory, so we can call
 			// resp.Dump() to get the dump content when needed in response

@@ -46,7 +46,7 @@ func (u update) Handle(params operations.PutG2pMapperUpdateParams) middleware.Re
 	}
 
 	onUpdateRequest := u.createOnUpdateRequestPayload(params, updateResponses)
-	services.NewCallbackService().Callback(onUpdateRequest, "on-update")
+	services.NewCallbackService(string(params.Body.Header.SenderURI)).Callback(onUpdateRequest, "on-update")
 
 	response := operations.NewPutG2pMapperUpdateDefault(200)
 	response.Payload = &operations.PutG2pMapperUpdateDefaultBody{
