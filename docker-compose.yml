@@ -32,6 +32,13 @@ services:
       - webhook_enabled=false
       - webhook_url=http://localhost:5001/api/v1/callback
       - manager_type=${MANAGER_TYPE-DefinitionsManager}
+      - claims_enabled=${CLAIMS_ENABLED-false}
+      - signature_enabled=${CLAIMS_ENABLED-false}
+      - certificate_enabled=${CERTIFICATE_ENABLED-false}
+      - filestorage_enabled=${FILESSTORAGE_ENABLED-false}
+      - async_enabled=${ASYNC_ENABLED-false}
+      - notification_async_enabled=${NOTIFICATION_ASYNC_ENABLED-false}
+      - notification_enabled=${NOTIFICATION_ENABLED-false}
     depends_on:
       es:
         condition: service_healthy
