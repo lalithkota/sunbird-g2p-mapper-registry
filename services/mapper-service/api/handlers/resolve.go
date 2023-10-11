@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"time"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/sunbirdrc/mapper-service/services"
 	"github.com/sunbirdrc/mapper-service/swagger_gen/models"
 	"github.com/sunbirdrc/mapper-service/swagger_gen/restapi/operations"
-	"strings"
-	"time"
 )
 
 // ResolveHandler handles a request for linking an entry
@@ -32,15 +32,9 @@ func (u resolve) Handle(params operations.PostG2pMapperResolveParams) middleware
 	var resolveResponses []*models.ResolveResponse
 	registry := services.NewRegistry()
 	for _, resolveRequest := range params.Body.Message.ResolveRequest {
-		entityOsid := registry.SearchEntityById(string(resolveRequest.ID))
-		if entityOsid != "" {
-			getEntityResponse := registry.GetEntity(entityOsid)
-			resolveResponse := u.createResolveResponse(resolveRequest, getEntityResponse)
-			resolveResponses = append(resolveResponses, resolveResponse)
-		} else {
-			resolveResponse := u.createResolveResponse(resolveRequest, services.NewResultPayloadForFailure())
-			resolveResponses = append(resolveResponses, resolveResponse)
-		}
+		entities := registry.SearchEntity("id", string(resolveRequest.ID))
+		resolveResponse := u.createResolveResponse(resolveRequest, entities)
+		resolveResponses = append(resolveResponses, resolveResponse)
 	}
 
 	onUpdateRequest := u.createOnResolveRequestPayload(params, resolveResponses)
@@ -75,7 +69,7 @@ func toReference(s string) *string {
 	return &s
 }
 
-func (u resolve) createResolveResponse(resolveRequest *models.ResolveRequest, resolveEntityResponse services.Result) *models.ResolveResponse {
+func (u resolve) createResolveResponse(resolveRequest *models.ResolveRequest, resolveEntityResponse []services.FinancialMapper) *models.ResolveResponse {
 	timestamp := models.Timestamp(time.Now())
 	resolveResponse := &models.ResolveResponse{
 		AdditionalInfo:      resolveRequest.AdditionalInfo,
@@ -84,22 +78,24 @@ func (u resolve) createResolveResponse(resolveRequest *models.ResolveRequest, re
 		Status:              models.NewRequestStatus(SUCCESS),
 		StatusReasonCode:    "",
 		StatusReasonMessage: "",
+		Fa:                  "",
+		ID:                  "",
 		Timestamp:           &timestamp,
-		AccountProviderInfo: &models.AccountProviderInfo{
+		AccountProviderInfo: nil,
+	}
+	if len(resolveEntityResponse) <= 0 {
+		resolveResponse.Status = models.NewRequestStatus(FAILURE)
+		resolveResponse.StatusReasonCode = "rjct.id.invalid"
+		resolveResponse.StatusReasonMessage = "ID is invalid or not found."
+	} else {
+		resolveResponse.ID = models.PersonID(resolveEntityResponse[0].Id)
+		resolveResponse.Fa = models.FinancialAddress(resolveEntityResponse[0].Fa)
+		resolveResponse.AccountProviderInfo = &models.AccountProviderInfo{
 			AdditionalInfo: "",
 			Code:           toReference("GTBIRWRKXXX"),
 			Name:           toReference("GT Bank Rawanda"),
 			Subcode:        "bir",
-		},
-	}
-	if resolveEntityResponse.Params.Status == "UNSUCCESSFUL" {
-		resolveResponse.Status = models.NewRequestStatus(FAILURE)
-		if strings.Contains(resolveEntityResponse.Params.Errmsg, "duplicate") {
-			resolveResponse.StatusReasonCode = "rjct.reference_id.duplicate"
-		} else {
-			resolveResponse.StatusReasonCode = "rjct.reference_id.invalid"
 		}
-		resolveResponse.StatusReasonMessage = resolveEntityResponse.Params.Errmsg
 	}
 	return resolveResponse
 }

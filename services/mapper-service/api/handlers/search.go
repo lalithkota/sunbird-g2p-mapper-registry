@@ -1,11 +1,12 @@
 package handlers
 
 import (
+	"time"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/sunbirdrc/mapper-service/services"
 	"github.com/sunbirdrc/mapper-service/swagger_gen/models"
 	"github.com/sunbirdrc/mapper-service/swagger_gen/restapi/operations"
-	"time"
 )
 
 // SearchHandler handles a request for linking an entry
