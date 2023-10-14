@@ -85,7 +85,7 @@ func (u resolve) createResolveResponse(resolveRequest *models.ResolveRequest, re
 	}
 	if len(resolveEntityResponse) <= 0 {
 		resolveResponse.Status = models.NewRequestStatus(FAILURE)
-		resolveResponse.StatusReasonCode = "rjct.id.invalid"
+		resolveResponse.StatusReasonCode = "rjct.reference_id.invalid"
 		resolveResponse.StatusReasonMessage = "ID is invalid or not found."
 	} else {
 		resolveResponse.ID = models.PersonID(resolveEntityResponse[0].Id)

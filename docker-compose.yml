@@ -66,6 +66,8 @@ services:
     environment:
       - REGISTRY_URL=http://registry:8081/
       - CALLBACK_SERVICE_URL=http://callback-service:8765/v0.1.0/mapper/
+      - SWAGGER_DEBUG="1"
+      - DEBUG="1"
     ports:
       - "8766:8766"
   callback-service:
