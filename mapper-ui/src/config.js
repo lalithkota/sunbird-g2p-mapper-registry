@@ -1,3 +1,3 @@
 export const config = {
-    BASE_URL: "http://localhost:8087"
+    BASE_URL: "https://g2p-financial-wrapper.sunbirdrc.dev"
 }
