@@ -2,7 +2,8 @@
 	import {createMapperHeader, createTransactionObject} from "../../util.js";
 	import {config} from "../../config.js";
 
-	let value = "";
+	let idValue = "";
+	let faValue = "";
 
 	function onResolve() {
 		const {transaction_id, reference_id} = createTransactionObject();
@@ -20,10 +21,10 @@
 						{
 							"reference_id": reference_id,
 							"timestamp": new Date().toISOString(),
-							"fa": "token:12345@gtbank",
-							"id": value,
+							"fa": faValue,
+							"id": idValue,
 							"name": "Mr. John Smith",
-							"scope": "yes_no",
+							"scope": idValue && faValue ? "yes_no" : "details",
 							"additional_info": {
 								"key": "string",
 								"value": "string"
@@ -46,7 +47,11 @@
 <div class="text-column">
 	<div>
 		<span>ID:</span>
-		<input bind:value={value}/>
+		<input bind:value={idValue}/>
+	</div>
+	<div>
+		<span>FA:</span>
+		<input bind:value={faValue}/>
 	</div>
 
 	<button on:click={onResolve}>Resolve</button>

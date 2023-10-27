@@ -32,7 +32,18 @@ func (u resolve) Handle(params operations.PostG2pMapperResolveParams) middleware
 	var resolveResponses []*models.ResolveResponse
 	registry := services.NewRegistry()
 	for _, resolveRequest := range params.Body.Message.ResolveRequest {
-		entities := registry.SearchEntity("id", string(resolveRequest.ID))
+		var entities []services.FinancialMapper
+		// If ID is given, always use ID to resolve
+		// Else If FA is given, use FA to resolve
+		if resolveRequest.ID != "" {
+			entities = registry.SearchEntity("id", string(resolveRequest.ID))
+		} else if resolveRequest.Fa != "" {
+			// TODO: Since fa is not supposed to be unique in schema, multiple ids could be
+			//   attached with same fa. id1 <-> fa1, id2 <-> fa1, id3 <-> fa1.
+			//   Right now this only return the first id <-> fa mapping that it finds.
+			//   Fix this issue.
+			entities = registry.SearchEntity("fa", string(resolveRequest.Fa))
+		}
 		resolveResponse := u.createResolveResponse(resolveRequest, entities)
 		resolveResponses = append(resolveResponses, resolveResponse)
 	}
@@ -85,8 +96,19 @@ func (u resolve) createResolveResponse(resolveRequest *models.ResolveRequest, re
 	}
 	if len(resolveEntityResponse) <= 0 {
 		resolveResponse.Status = models.NewRequestStatus(FAILURE)
-		resolveResponse.StatusReasonCode = "rjct.reference_id.invalid"
-		resolveResponse.StatusReasonMessage = "ID is invalid or not found."
+		// if ID is given return id.invalid
+		// else if FA is given, return fa.invalid
+		// if neither is given return id.invalid, because it expects id primarily.
+		if resolveRequest.ID != "" {
+			resolveResponse.StatusReasonCode = "rjct.id.invalid"
+			resolveResponse.StatusReasonMessage = "ID is invalid or not found."
+		} else if resolveRequest.Fa != "" {
+			resolveResponse.StatusReasonCode = "rjct.fa.invalid"
+			resolveResponse.StatusReasonMessage = "FA is invalid or not found."
+		} else {
+			resolveResponse.StatusReasonCode = "rjct.id.invalid"
+			resolveResponse.StatusReasonMessage = "ID is invalid or not found."
+		}
 	} else {
 		resolveResponse.ID = models.PersonID(resolveEntityResponse[0].Id)
 		resolveResponse.Fa = models.FinancialAddress(resolveEntityResponse[0].Fa)

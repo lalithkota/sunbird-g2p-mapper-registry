@@ -527,7 +527,6 @@ definitions:
     required:
       - reference_id
       - timestamp
-      - fa
     type: object
   ResolveResponse:
     description: Resolve financial address to store of value account info response
